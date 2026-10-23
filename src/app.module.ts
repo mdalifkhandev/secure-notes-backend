@@ -18,11 +18,23 @@ import { AggregationsModule } from './aggregations/aggregations.module';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        uri:
+      useFactory: (configService: ConfigService) => {
+        const uri =
           configService.get<string>('MONGODB_URI') ||
-          'mongodb://localhost:27017/secure_notes',
-      }),
+          process.env.MONGODB_URI ||
+          'mongodb://localhost:27017/secure_notes';
+
+        if (!configService.get<string>('MONGODB_URI') && !process.env.MONGODB_URI) {
+          console.warn(
+            '⚠️ [WARNING] MONGODB_URI is not set! In a serverless environment, connection to localhost:27017 will fail.',
+          );
+        }
+
+        return {
+          uri,
+          serverSelectionTimeoutMS: 5000,
+        };
+      },
     }),
     AuthModule,
     UsersModule,
