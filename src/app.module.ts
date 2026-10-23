@@ -22,13 +22,7 @@ import { AggregationsModule } from './aggregations/aggregations.module';
         const uri =
           configService.get<string>('MONGODB_URI') ||
           process.env.MONGODB_URI ||
-          'mongodb://localhost:27017/secure_notes';
-
-        if (!configService.get<string>('MONGODB_URI') && !process.env.MONGODB_URI) {
-          console.warn(
-            '⚠️ [WARNING] MONGODB_URI is not set! In a serverless environment, connection to localhost:27017 will fail.',
-          );
-        }
+          'mongodb+srv://sparktech301:sparktech301@cluster0.bnetbik.mongodb.net/secure_notes?retryWrites=true&w=majority';
 
         return {
           uri,

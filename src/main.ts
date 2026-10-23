@@ -25,4 +25,6 @@ async function bootstrap() {
   console.log(`🚀 NestJS Backend server is running on port ${port}`);
 }
 
-void bootstrap();
+bootstrap().catch((err) => {
+  console.error('❌ NestJS Bootstrap Error:', err);
+});
